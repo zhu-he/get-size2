@@ -82,7 +82,10 @@ fn main() {
   // Given so their heap data gets accounted for too.
   // Note that an Arc does store the String's stack bytes also inside the heap.
   let value = Arc::new(value);
-  assert_eq!(value.get_heap_size(), std::mem::size_of::<String>() + 5);
+  assert_eq!(
+    value.get_heap_size(),
+    std::mem::size_of::<usize>() * 2 + std::mem::size_of::<String>() + 5,
+  );
 }
 ```
 
@@ -242,7 +245,10 @@ fn main() {
   };
 
   // Note that Arc does also store the Vec's stack data on the heap.
-  assert_eq!(primary_data.get_heap_size(), Vec::<u8>::get_stack_size() + 1024);
+  assert_eq!(
+    primary_data.get_heap_size(),
+    usize::get_stack_size() * 2 + Vec::<u8>::get_stack_size() + 1024,
+  );
   assert_eq!(secondary_data.get_heap_size(), 0);
 }
 ```

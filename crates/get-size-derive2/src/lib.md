@@ -146,7 +146,10 @@ fn main() {
   };
 
   // Note that Arc does also store the Vec's stack data on the heap.
-  assert_eq!(primary_data.get_heap_size(), Vec::<u8>::get_stack_size() + 1024);
+  assert_eq!(
+    primary_data.get_heap_size(),
+    usize::get_stack_size() * 2 + Vec::<u8>::get_stack_size() + 1024,
+  );
   assert_eq!(secondary_data.get_heap_size(), 0);
 }
 ```

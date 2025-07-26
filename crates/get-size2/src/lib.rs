@@ -397,7 +397,10 @@ where
         let addr = Self::as_ptr(&strong_ref);
 
         if tracker.track(addr, strong_ref) {
-            GetSize::get_size_with_tracker(&**self, tracker)
+            let (mut size, tracker) = GetSize::get_size_with_tracker(&**self, tracker);
+            // `RcInner` contains `strong` and `weak`.
+            size += std::mem::size_of::<usize>() * 2;
+            (size, tracker)
         } else {
             (0, tracker)
         }
@@ -424,7 +427,10 @@ where
         let addr = Self::as_ptr(&strong_ref);
 
         if tracker.track(addr, strong_ref) {
-            GetSize::get_size_with_tracker(&**self, tracker)
+            let (mut size, tracker) = GetSize::get_size_with_tracker(&**self, tracker);
+            // `ArcInner` contains `strong` and `weak`.
+            size += std::mem::size_of::<usize>() * 2;
+            (size, tracker)
         } else {
             (0, tracker)
         }

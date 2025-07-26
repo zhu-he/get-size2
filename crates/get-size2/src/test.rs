@@ -250,6 +250,20 @@ fn derive_newtype() {
 }
 
 #[test]
+fn rc_and_arc() {
+    let rc = Rc::new(1u8);
+    assert_eq!(
+        rc.get_heap_size(),
+        usize::get_stack_size() * 2 + u8::get_stack_size(),
+    );
+    let arc = Arc::new(1u8);
+    assert_eq!(
+        arc.get_heap_size(),
+        usize::get_stack_size() * 2 + u8::get_stack_size(),
+    );
+}
+
+#[test]
 fn boxed_slice() {
     use std::mem::size_of;
     let boxed = vec![1u8; 10].into_boxed_slice();
